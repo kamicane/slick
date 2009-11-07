@@ -120,11 +120,11 @@ authors:
 			}
 	
 			if (j == 0){
-				local[combinator](context, tag, id, parts, classes, attributes, pseudos);
+				local[combinator](context, tag, id, parts, classes, attributes, pseudos, currentBit.xpath);
 			} else {
 				items = current;
 				if (local[combinator])
-					for (m = 0, n = items.length; m < n; m++) local[combinator](items[m], tag, id, parts, classes, attributes, pseudos);
+					for (m = 0, n = items.length; m < n; m++) local[combinator](items[m], tag, id, parts, classes, attributes, pseudos, currentBit.xpath);
 				else
 					if (Slick.debug) Slick.debug("Tried calling non-existant combinator: '" + currentBit.combinator + "'", currentExpression);
 			}
@@ -305,7 +305,7 @@ authors:
 	
 	var combinators = {
 
-		' ': function(node, tag, id, parts, classes, attributes, pseudos){ // all child nodes, any level
+		' ': function(node, tag, id, parts, classes, attributes, pseudos, xpath){ // all child nodes, any level
 			var i,l,item,children;
 
 			if(!this.isXMLDocument){
@@ -325,13 +325,41 @@ authors:
 					this.push(item, tag, null, parts);
 					return;
 				}
-				getByClass: if (node.getElementsByClassName && classes && !this.cachedGetElementsByClassName) {
-					children = node.getElementsByClassName(classes.join(' '));
-					if (!(children && children.length)) break getByClass;
-					for (i = 0, l = children.length; i < l; i++) this.push(children[i], tag, id, parts, false);
-					return;
-				}
 			}
+
+			XPATH: if (document.evaluate && xpath) { // XPATH
+				var xpathResult = document.evaluate((node.nodeType === 9 ? xpath.document : xpath.node), node, null, 0, null);
+				while ((item = xpathResult.iterateNext())) {
+					this.push(item, null, null, parts, false, attributes, pseudos);
+				}
+				return;
+			}
+
+			// getByClass_XPATH: if (classes && document.evaluate) { // XPATH
+			// 	var xpath = [(node.nodeType === 9 ? '//' : './'),tag,'[contains(concat(" ", @class, " "), " ',classes.join(' ")]'+'[contains(concat(" ", @class, " "), " '),' ")]'].join('');
+			// 	var xpathResult = document.evaluate(xpath, node, null, 0, null);
+			// 	top.window.xpathResult = xpathResult;
+			// 	while ((item = xpathResult.iterateNext())) {
+			// 		this.push(item, null, id, parts, false);
+			// 	}
+			// 	return;
+			// }
+
+			getByClass: if (node.getElementsByClassName && classes && !this.cachedGetElementsByClassName) {
+				children = node.getElementsByClassName(classes.join(' '));
+				if (!(children && children.length)) break getByClass;
+				for (i = 0, l = children.length; i < l; i++) this.push(children[i], tag, id, parts, false);
+				return;
+			}
+
+			// getByClass_XPATH: if (classes && "selectNodes" in node) { // Microsoft XPATH
+			// 	document.setProperty("SelectionLanguage","XPath");
+			// 	var xpath = [(node == document ? '//' : './'),tag,'[contains(concat(" ", @class, " "), " ',classes.join(' ")]'+'[contains(concat(" ", @class, " "), " '),' ")]'].join('');
+			// 	var children = node.selectNodes(xpath);
+			// 	for (i = 0, l = children.length; i < l; i++) this.push(children[i], null, id, parts, false);
+			// 	return;
+			// }
+
 			getByTag: {
 				children = node.getElementsByTagName(tag);
 				if (!(children && children.length)) break getByTag;
@@ -711,8 +739,49 @@ authors:
 		separatorIndex = -1;
 		while (exp != (exp = exp.replace(regexp, parser)));
 		parsed.length = parsed.expressions.length;
+		
+		for (var i=0, expression; expression = parsed.expressions[i++];) for (var j=0, expression; expressionBit = expression[j++];) {
+			expressionBit.xpath = expressionToXPATH(expressionBit);
+		}
+		
 		return currentCache[expression] = (reversed) ? reverse(parsed) : parsed;
 	};
+	
+	function expressionToXPATH(expression){
+		var xpath = [];
+		var begin,end;
+		
+		// tag
+		xpath.push(expression.tag);
+		
+		// id
+		if (expression.id) {
+			begin = '[@id="';
+			end   = '"]';
+			xpath.push(begin, expression.id, end);
+		};
+		
+		// classes
+		// [(node.nodeType === 9 ? '//' : './'),tag,'[contains(concat(" ", @class, " "), " ',classes.join(' ")]'+'[contains(concat(" ", @class, " "), " '),' ")]'].join('');
+		if (expression.classes && expression.classes.length) {
+			begin = '[contains(concat(" ", @class, " "), " ';
+			end   = ' ")]';
+			xpath.push(begin, expression.classes.join(end+begin), end);
+		}
+		
+		// attributes
+		// if (expression.attributes && expression.attributes.length);
+		
+		// pseudos
+		// if (expression.pseudos && expression.pseudos.length);
+		
+		// console.log(['//'].concat(xpath).join(''));
+		return {
+			document : ['//'].concat(xpath).join(''),
+			node     : ['./'].concat(xpath).join('')
+		}
+	};
+	
 	
 	var reverseCombinator = function(combinator){
 		if (combinator == '!') return ' ';
