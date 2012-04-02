@@ -1,12 +1,24 @@
 {
-  "name"          : "slick",
-  "description"   : "Standalone CSS Selector Parser and Engine.",
-  "url"           : "http://mootools.github.com/slick",
-  "keywords"      : ["util", "dom", "css", "selector", "parser", "mootools"],
-  "author"        : "Thomas Aylott",
-  "contributors"  : ["Fabio Miranda Costa", "Valerio Proietti", "Jan Kassens"],
-  "dependencies"  : [],
-  "lib"           : "Source",
-  "main"          : "./Source/slick.js",
-  "version"       : "1.0.0"
+  "name": "slick",
+  "homepage": "https://github.com/mootools/slick",
+  "version": "1.9.0-alpha",
+  "main": "./lib/main.js",
+  "description": "Standalone CSS Selector Finder and Parser.",
+  "keywords": [
+    "util", "dom", "css", "selector", "finder", "parser", "mootools"
+  ],
+  "author" : "Thomas Aylott",
+  "contributors" : [
+    "Fabio Miranda Costa",
+    "Valerio Proietti <@kamicane> (http://mad4milk.net)",
+    "Jan Kassens"
+  ],
+  "bugs": {
+    "url": "https://github.com/mootools/slick/issues"
+  },
+  "license": "MIT (http://mootools.net/license.txt)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mootools/slick.git"
+  }
 }

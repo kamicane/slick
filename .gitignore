@@ -1,5 +1,3 @@
-slick.tmproj
-slick.js
-*.swp
-*.swo
-*~
+.tm_properties
+*.html
+test.js
