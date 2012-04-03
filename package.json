@@ -1,17 +1,17 @@
 {
   "name": "slick",
   "homepage": "https://github.com/mootools/slick",
-  "version": "1.9.0-alpha",
+  "version": "1.8.9-alpha",
   "main": "./lib/main.js",
   "description": "Standalone CSS Selector Finder and Parser.",
   "keywords": [
-    "util", "dom", "css", "selector", "finder", "parser", "mootools"
+    "dom", "css", "selector", "finder", "parser"
   ],
-  "author" : "Thomas Aylott",
+  "author" : "Valerio Proietti <@kamicane> (http://mad4milk.net)",
   "contributors" : [
-    "Fabio Miranda Costa",
-    "Valerio Proietti <@kamicane> (http://mad4milk.net)",
-    "Jan Kassens"
+    "Fabio Miranda Costa <@fabiomcosta>",
+    "Thomas Aylott <@SubtleGradient>",
+    "Jan Kassens <@jank>"
   ],
   "bugs": {
     "url": "https://github.com/mootools/slick/issues"
