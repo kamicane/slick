@@ -1,7 +1,7 @@
 {
   "name": "slick",
-  "homepage": "https://github.com/mootools/slick",
-  "version": "1.9.0-alpha",
+  "homepage": "https://github.com/kamicane/slick",
+  "version": "1.8.9-alpha",
   "main": "./lib/main.js",
   "description": "Standalone CSS Selector Finder and Parser.",
   "keywords": [
@@ -18,12 +18,12 @@
     "Jan Kassens <@jank>"
   ],
   "bugs": {
-    "url": "https://github.com/mootools/slick/issues"
+    "url": "https://github.com/kamicane/slick/issues"
   },
   "license": "MIT (http://mootools.net/license.txt)",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mootools/slick.git"
+    "url": "git://github.com/kamicane/slick.git"
   },
   "dependencies": {},
   "devDependencies": {},
