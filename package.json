@@ -25,8 +25,14 @@
     "type": "git",
     "url": "git://github.com/kamicane/slick.git"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "expect.js": "*"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
