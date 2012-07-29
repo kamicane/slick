@@ -1,45 +1,25 @@
 
-var PARSE = require('../lib/parser'),
-    expect = require('expect.js'),
-    s
+(function(){
 
+var PARSE, s
 
-var TAGS = 'normal UPCASE escaped\\,character ǝpoɔıun'.split(' ')
-var IDS = "normal escaped\\,character ǝpoɔıun with-dash with_underscore 123number silly\\:id\\:\\:with\\:colons".split(' ')
-var CLASSES = "normal escaped\\,character ǝpoɔıun 瀡 with-dash with_underscore 123number MiXeDcAsE".split(' ')
-var ATTRIB_OPERATORS = '= != *= ^= $= ~= |='.split(' ')
-var ATTRIB_KEYS = '\
-normal,\
- spaced,\
-spaced ,\
-escaped\\]character,\
-ǝpoɔıun,\
-with-dash,\
-with_underscore,\
-123number,\
-'.split(',')
-var ATTRIB_VALUES = '\
-normal,\
-ǝpoɔıun,\
-"double quote",\
-\'single quote\',\
-"double\\"escaped",\
-\'single\\\'escaped\',\
- spaced,\
-spaced ,\
- "spaced",\
- \'spaced\',\
-"spaced" ,\
-\'spaced\' ,\
-parens(),\
-curly{},\
-"quoted parens()",\
-"quoted curly{}",\
-"quoted square[]",\
-'.split(',')
-var PSEUDO_KEYS = 'normal escaped\\,character ǝpoɔıun with-dash with_underscore'.split(' ')
-var PSEUDO_VALUES = 'normal,ǝpoɔıun, spaced,"double quote",\'single quote\',"double\\"escaped",\'single\\\'escaped\',curly{},square[],"quoted parens()","quoted curly{}","quoted square[]"'.split(',');
-var COMBINATORS = (" >+~" + "`!@$%^&={}\\;</").split('')
+if (typeof require !== 'undefined') {
+    PARSE = require('../lib/parser')
+    var expect = require('expect.js')
+    var fixtures = {parser: require('./fixtures/parser')}
+} else {
+    PARSE = slick.parse
+}
+
+var TAGS = fixtures.parser.TAGS,
+    IDS = fixtures.parser.IDS,
+    CLASSES = fixtures.parser.CLASSES,
+    ATTRIB_OPERATORS = fixtures.parser.ATTRIB_OPERATORS,
+    ATTRIB_KEYS = fixtures.parser.ATTRIB_KEYS,
+    ATTRIB_VALUES = fixtures.parser.ATTRIB_VALUES,
+    PSEUDO_KEYS = fixtures.parser.PSEUDO_KEYS,
+    PSEUDO_VALUES = fixtures.parser.PSEUDO_VALUES,
+    COMBINATORS = fixtures.parser.COMBINATORS
 
 
 describe('Slick Parser', function(){
@@ -308,3 +288,5 @@ describe('Slick Parser', function(){
     })
 
 })
+
+}())
