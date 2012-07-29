@@ -24,9 +24,10 @@ var TAGS = fixtures.parser.TAGS,
 
 describe('Slick Parser', function(){
 
-    it('should exist', function(){
-        expect(PARSE).not.to.be.an('undefined')
+    it('should exist and be a function', function(){
+        expect(PARSE).to.be.a('function')
     })
+
 
     describe('comma-separated expressions', function(){
         it('should have length equals to the number of comma-separated expressions', function(){
@@ -285,6 +286,19 @@ describe('Slick Parser', function(){
         for (var COMBINATOR_I=0, COMBINATOR; COMBINATOR = COMBINATORS[COMBINATOR_I]; COMBINATOR_I++){
             it('should support COMBINATOR: ‘'+COMBINATOR+'’', newCOMBINATOR(COMBINATOR))
         }
+    })
+
+
+    describe('the toString functionality', function() {
+
+        it('should be equivalent to the parsed selector string', function() {
+            var selector = 'c, b,  .class,  #id[name="value"],  [aa~=value]'
+            var toString = 'c, b, *.class, *#id[name="value"], *[aa~="value"]'
+
+            s = PARSE(selector)
+            expect('' + s).to.equal(toString)
+        });
+
     })
 
 })
