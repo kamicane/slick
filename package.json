@@ -1,8 +1,8 @@
 {
   "name": "slick",
   "homepage": "https://github.com/kamicane/slick",
-  "version": "1.9.2",
-  "main": "./lib/main.js",
+  "version": "1.9.3-dev",
+  "main": "./index.js",
   "description": "Standalone CSS Selector Finder and Parser.",
   "keywords": [
     "dom",
@@ -14,8 +14,7 @@
   "author": "Valerio Proietti <@kamicane> (http://mad4milk.net)",
   "contributors": [
     "Fabio Miranda Costa <@fabiomcosta>",
-    "Thomas Aylott <@SubtleGradient>",
-    "Jan Kassens <@jank>"
+    "Thomas Aylott <@SubtleGradient>"
   ],
   "bugs": {
     "url": "https://github.com/kamicane/slick/issues"

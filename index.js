@@ -1,5 +1,5 @@
 /*
-Finder Finder
+Slick Finder
 */"use strict"
 
 // Notable changes from Slick.Finder 1.0.x
@@ -796,6 +796,8 @@ slick.sort = function(nodes){
     if (nodes && nodes.length > 1) finder(nodes[0]).sort(nodes)
     return nodes
 }
+
+slick.parse = parse;
 
 // slick.debug = true
 // slick.noQSA  = true
