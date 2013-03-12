@@ -466,7 +466,7 @@ var combinators = {
 Finder.prototype.search = function(context, expression, found){
 
     if (!context) context = this.document
-    else if (context.document) context = context.document
+    else if (!context.nodeType && context.document) context = context.document
 
     var expressions = parse(expression)
 
