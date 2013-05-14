@@ -20,30 +20,30 @@ Find nodes in the DOM
 Search this context for any nodes that match this selector.
 
 Expects:
-* context: document or node or array of documents or nodes
 * selector: String or SelectorObject
+* (**optional**) context: document or node or array of documents or nodes
 * (**optional**) append: Array or Object with a push method
 
 Returns: append argument or Array of 0 or more nodes
 
-	slick.search(document, "#foo > bar.baz") → [<bar>, <bar>, <bar>]
-	slick.search([<ol>, <ul>], "li > a") → [<a>, <a>, <a>]
-	slick.search(document, "#foo > bar.baz", { push:function(){} }) → { push:function(){}, 0:<bar>, 1:<bar>, 2:<bar> }
+	slick.search("#foo > bar.baz") → [<bar>, <bar>, <bar>]
+	slick.search("li > a", [<ol>, <ul>]) → [<a>, <a>, <a>]
+	slick.search("#foo > bar.baz", document, []) → [<bar>, <bar>, <bar>]
 
 ### `find` first in context with selector or null
 
 Find the first node in document that matches selector or null if none are found.
 
 Expects:
-* context: document or node or array of documents or nodes
 * selector: String or SelectorObject
+* (**optional**) context: document or node or array of documents or nodes
 
 Returns: Element or null
 
-	slick.find(document, "#foo > bar.baz") → <bar>
-	slick.find(node, "#does-not-exist") → null
+	slick.find("#foo > bar.baz") → <bar>
+	slick.find("#does-not-exist", node) → null
 
-### node `match` selector?
+### node `matches` selector?
 
 Does this node match this selector?
 
@@ -53,9 +53,9 @@ Expects:
 
 Returns: true or false
 
-	slick.match(<div class=rocks>, "div.rocks") → true
-	slick.match(<div class=lame>, "div.rocks") → false
-	slick.match(<div class=lame>, <div class=rocks>) → false
+	slick.matches(<div class=rocks>, "div.rocks") → true
+	slick.matches(<div class=lame>, "div.rocks") → false
+	slick.matches(<div class=lame>, <div class=rocks>) → false
 
 ### context `contains` node?
 
