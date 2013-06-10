@@ -80,7 +80,7 @@ var HAS = {
 
     MATCHES_SELECTOR: function(test){
 
-        test.innerHTML = '<a class="MiX"></a>'
+        test.className = "MiX"
 
         // checks if the document has matchesSelector, and we can use it.
 
@@ -243,13 +243,14 @@ var Finder = function Finder(document){
 
     if (nativeMatches) this.matchesSelector = function(node, expression){
 
-        if (this.failed[expression]) return true
+        if (this.failed[expression]) return null
 
         try {
             return nativeMatches.call(node, expression)
         } catch(e){
             if (slick.debug) console.warn("matchesSelector failed on " + expression)
-            return this.failed[expression] = true
+            this.failed[expression] = true
+            return null
         }
 
     }
@@ -647,7 +648,7 @@ Finder.prototype.match = function(node, bit, noTag, noId, noClass){
 
     if (!slick.noQSA && this.matchesSelector){
         var matches = this.matchesSelector(node, bit)
-        if (matches !== true) return matches
+        if (matches !== null) return matches
     }
 
     // normal matching
@@ -739,10 +740,10 @@ Finder.prototype.matches = function(node, expression){
 
     if (!slick.noQSA && this.matchesSelector){
         var matches = this.matchesSelector(node, expressions)
-        if (matches !== true) return matches
+        if (matches !== null) return matches
     }
 
-    var nodes = this.search(node, expression, {length: 0})
+    var nodes = this.search(this.document, expression, {length: 0})
 
     for (var i = 0, res; res = nodes[i++];) if (node === res) return true
     return false
