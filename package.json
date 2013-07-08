@@ -1,7 +1,7 @@
 {
   "name": "slick",
   "homepage": "https://github.com/kamicane/slick",
-  "version": "1.10.1-dev",
+  "version": "1.10.1",
   "main": "./index.js",
   "description": "Standalone CSS Selector Finder and Parser.",
   "keywords": [
