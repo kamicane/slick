@@ -451,7 +451,7 @@ var combinators = {
             if (node.nodeType == 1){
                 if (this.match(node, part)) push(node)
             } else {
-                combinators['+'].call(this, node, part)
+                combinators['!+'].call(this, node, part, push)
             }
         }
     },
