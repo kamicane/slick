@@ -261,7 +261,7 @@ var Finder = function Finder(document){
 
             if (this.failed[expression]) return true
 
-            var result, _id, _expression, _slick_id, _combinator
+            var result, _id, _expression, _combinator, _node
 
 
             // non-document rooted QSA
@@ -275,9 +275,9 @@ var Finder = function Finder(document){
                 _expression = expression
 
                 if (!_id){
-                    _slick_id = true
+                    _node = node
                     _id = "__slick__"
-                    node.setAttribute("id", _id)
+                    _node.setAttribute("id", _id)
                 }
 
                 expression = "#" + _id + " " + _expression
@@ -303,7 +303,7 @@ var Finder = function Finder(document){
                 result = this.failed[_expression || expression] = true
             }
 
-            if (_slick_id) node.removeAttribute("id")
+            if (_node) _node.removeAttribute("id")
 
             return result
 
