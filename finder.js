@@ -15,19 +15,29 @@ var parse = require("./parser")
 
 // utilities
 
-var uniqueIndex = 0
+var index = 0,
+    counter = document.__counter = (parseInt(document.__counter || -1, 36) + 1).toString(36),
+    key = "uid:" + counter
 
-var uniqueID = function(node){
-    return node.uniqueNumber || (node.uniqueNumber = "s:" + uniqueIndex++)
+var uniqueID = function(n, xml){
+    if (n === global) return "global"
+    if (n === document) return "document"
+    if (n === document.documentElement) return "html"
+
+    if (xml) {
+        var uid = n.getAttribute(key)
+        if (!uid) {
+            uid = (index++).toString(36)
+            n.setAttribute(key, uid)
+        }
+        return uid
+    } else {
+        return n[key] || (n[key] = (index++).toString(36))
+    }
 }
 
-var uniqueIDXML = function(node){
-    var uid = node.getAttribute("uniqueNumber")
-    if (!uid){
-        uid = "s:" + uniqueIndex++
-        node.setAttribute("uniqueNumber", uid)
-    }
-    return uid
+var uniqueIDXML = function(n) {
+    return uniqueID(n, true)
 }
 
 var isArray = Array.isArray || function(object){
@@ -36,9 +46,12 @@ var isArray = Array.isArray || function(object){
 
 // tests
 
+var uniqueIndex = 0;
+
 var HAS = {
 
     GET_ELEMENT_BY_ID: function(test, id){
+        id = "slick_" + (uniqueIndex++);
         // checks if the document has getElementById, and it works
         test.innerHTML = '<a id="' + id + '"></a>'
         return !!this.getElementById(id)
@@ -55,6 +68,7 @@ var HAS = {
     },
 
     EXPANDOS: function(test, id){
+        id = "slick_" + (uniqueIndex++);
         // checks if the document has elements that support expandos
         test._custom_property_ = id
         return test._custom_property_ === id
@@ -173,7 +187,7 @@ var Finder = function Finder(document){
 
     } : function(node, name){
 
-        var node = node.getAttributeNode(name)
+        node = node.getAttributeNode(name)
         return (node && node.specified) ? node.value : null
 
     }
@@ -331,7 +345,7 @@ Finder.prototype.has = function(FEATURE){
     var TEST = HAS[FEATURE], result = false
 
     if (TEST) try {
-        result = TEST.call(document, testNode, "s:" + (uniqueIndex++))
+        result = TEST.call(document, testNode)
     } catch(e){}
 
     if (slick.debug && !result) console.warn("document has no " + FEATURE)
@@ -495,7 +509,7 @@ Finder.prototype.search = function(context, expression, found){
 
     // walker
 
-    var node, nodes, part, ctx
+    var node, nodes, part
 
     main: for (var i = 0; expression = expressions[i++];){
 
@@ -561,7 +575,6 @@ var pseudos = {
     // TODO: returns different results than qsa empty.
 
     'empty': function(){
-        var child = this.firstChild
         return !(this && this.nodeType === 1) && !(this.innerText || this.textContent || '').length
     },
 
