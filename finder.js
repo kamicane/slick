@@ -311,7 +311,7 @@ var Finder = function Finder(document){
             }
 
             if (!result) try {
-                result = node.querySelectorAll(expression)
+                result = node.querySelectorAll(expression.toString())
             } catch(e){
                 if (slick.debug) console.warn("querySelectorAll failed on " + (_expression || expression))
                 result = this.failed[_expression || expression] = true
