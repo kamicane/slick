@@ -20,7 +20,7 @@ var index = 0,
     key = "uid:" + counter
 
 var uniqueID = function(n, xml){
-    if (n === global) return "global"
+    if (n === window) return "window"
     if (n === document) return "document"
     if (n === document.documentElement) return "html"
 
