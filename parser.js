@@ -12,7 +12,7 @@ Slick Parser
 // - Expression::toString() produces a cleaned up expression string
 // The only exposed method is parse, which produces a (cached) `new Expressions` instance
 // parsed.raw is no longer present, use .toString()
-// parsed.expression is now useless, just use the indexes
+// parsed.expression is now useless, just use the indices
 // parsed.reverse() has been removed for now, due to its apparent uselessness
 // Other changes in the Expressions object:
 // - classNames are now unique, and save both escaped and unescaped values
@@ -218,9 +218,15 @@ var Expressions = function Expressions(expression){
 
     var self = this
 
-    while (expression) expression = expression.replace(slickRe, function(){
-        return replacer.apply(self, arguments)
-    })
+    var original = expression, replaced
+
+    while (expression){
+        replaced = expression.replace(slickRe, function(){
+            return replacer.apply(self, arguments)
+        })
+        if (replaced === expression) throw new Error(original + ' is an invalid expression')
+        expression = replaced
+    }
 }
 
 Expressions.prototype.toString = function(){
