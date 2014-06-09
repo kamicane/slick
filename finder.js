@@ -485,6 +485,7 @@ Finder.prototype.search = function(context, expression, found){
 
     var expressions = parse(expression)
 
+    // no expressions were parsed. todo: is this really necessary?
     if (!expressions || !expressions.length) throw new Error("invalid expression")
 
     if (!found) found = []
@@ -495,6 +496,8 @@ Finder.prototype.search = function(context, expression, found){
         found[found.length++] = node
     }
 
+    // if there is more than one expression we need to check for duplicates when we push to found
+    // this simply saves the old push and wraps it around an uid dupe check.
     if (expressions.length > 1){
         uniques = {}
         var plush = push
@@ -517,6 +520,7 @@ Finder.prototype.search = function(context, expression, found){
 
         // TODO: more functional tests
 
+        // if there is querySelectorAll (and the expression does not fail) use it.
         if (!slick.noQSA && this.querySelectorAll){
 
             nodes = this.querySelectorAll(context, expression)
@@ -528,6 +532,10 @@ Finder.prototype.search = function(context, expression, found){
             }
         }
 
+        // if there is only one part in the expression we don't need to check each part for duplicates.
+        // todo: this might be too naive. while solid, there can be expression sequences that do not
+        // produce duplicates. "body div" for instance, can never give you each div more than once.
+        // "body div a" on the other hand might.
         if (expression.length === 1){
 
             part = expression[0]
@@ -543,17 +551,19 @@ Finder.prototype.search = function(context, expression, found){
                 }
             }
 
+            // loop the expression parts
             for (var j = 0; part = expression[j++];){
                 f = []; u = {}
+                // loop the contexts
                 for (var k = 0; c = cs[k++];) combinators[part.combinator].call(this, c, part, p)
+                // nothing was found, the expression failed, continue to the next expression.
                 if (!f.length) continue main
-                if (j === expression.length) found = f
-                else cs = f
+                cs = f // set the contexts for future parts (if any)
             }
 
+            if (i === 0) found = f // first expression. directly set found.
+            else for (var l = 0; l < f.length; l++) push(f[l]) // any other expression needs to push to found.
         }
-
-        if (!found.length) continue main
 
     }
 
