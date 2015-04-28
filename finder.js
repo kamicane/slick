@@ -589,7 +589,7 @@ var pseudos = {
     },
 
     'not': function(expression){
-        return !slick.match(this, expression)
+        return !slick.matches(this, expression)
     },
 
     'contains': function(text){
