@@ -1,7 +1,7 @@
 {
   "name": "slick",
   "homepage": "https://github.com/kamicane/slick",
-  "version": "1.12.2",
+  "version": "1.12.3",
   "main": "./index.js",
   "description": "Standalone CSS Selector Finder and Parser.",
   "keywords": [
@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/kamicane/slick/issues"
   },
-  "license": "MIT (http://mootools.net/license.txt)",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/kamicane/slick.git"
